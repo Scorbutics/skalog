@@ -1,0 +1,12 @@
+﻿################################################################################
+# Ce fichier .gitignore a été automatiquement créé par Microsoft(R) Visual Studio.
+################################################################################
+
+/CMakeFiles
+/skalog.dir/Debug
+*.cmake
+*.txt
+*.vcxproj
+*.filters
+*.user
+*.sln
