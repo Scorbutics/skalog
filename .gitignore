@@ -5,8 +5,9 @@
 /CMakeFiles
 /skalog.dir/Debug
 *.cmake
-*.txt
 *.vcxproj
 *.filters
 *.user
 *.sln
+/CMakeCache.txt
+/.vs/skalog/v15
