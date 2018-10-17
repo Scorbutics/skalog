@@ -11,7 +11,7 @@ namespace ska {
 
 	template <class Command>
     class ActiveObjectInner {
-		template <class Command>
+		template <class T>
         friend class ActiveObject;
     private:
         

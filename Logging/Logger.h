@@ -9,7 +9,10 @@
 namespace ska {
 
 	template<class T>
-	class LoggerClassFormatter;
+	class LoggerClassFormatter {
+	public:
+		static constexpr const auto className = "";
+	};
 	
 	template<class T>
 	class LoggerClassLevel {
@@ -28,30 +31,26 @@ namespace ska {
 	template <LogLevel MinLevel = LogLevel::Debug, LogLevel MaxLevel = LogLevel::Error, class LogMethod = LogSync>
     class Logger : public loggerdetail::Logger {
 	private:
+		template<LogLevel logLevel>
 		loggerdetail::LogEntry<LogMethod> log(const char* className) {
 			return loggerdetail::LogEntry<LogMethod>{ *this, logLevel, m_logMethod, className };
 		}
 
 	public:
+		Logger() = default;
         Logger(std::ostream& output, LogFilter filter) :
             loggerdetail::Logger(output, std::move(filter)) {
         }
         
 		
-
-		template<LogLevel logLevel>
-		auto slog(const char* className) {
+		template <LogLevel logLevel, class Wrapped>
+		auto log() {
 			if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level &&
 				(logLevel >= MinLevel && logLevel <= MaxLevel)) {
-				return log(className);
+				return log<logLevel>(LoggerClassFormatter<Wrapped>::className);
 			} else {
 				return loggerdetail::EmptyProxy{};
 			}
-		}
-
-		template <LogLevel logLevel, class Wrapped>
-		auto log() {
-			return this->template slog<logLevel>(LoggerClassFormatter<Wrapped>::className);
 		}
 
         ~Logger() = default;
@@ -62,7 +61,7 @@ namespace ska {
 }
 
 #ifndef SKA_DONT_USE_LOG_DEFINE
-#define SKA_LOGC(logger, level, currentClass) logger.slog<ska::LogLevel::##level>(#currentClass)
+#define SKA_LOGC(logger, level, currentClass) logger.log<level, currentClass>()
 
 #ifdef __PRETTY_FUNCTION__
 #define SKA_CURRENT_FUNCTION __PRETTY_FUNCTION__
