@@ -4,6 +4,8 @@
 #include "LogEntry.h"
 #include "ColorStream.h"
 
+std::size_t ska::LogEntry::InstanceCounter = 0u;
+
 tm ska::LogEntry::currentDateTime() {
 	auto t = std::time(nullptr);
 #ifdef _MSC_VER
@@ -14,29 +16,4 @@ tm ska::LogEntry::currentDateTime() {
 #endif
 	return buf;
 }
-
-void ska::LogEntry::consumeTokens() {
-    if(alreadyLogged) {
-        return;
-    }
-
-    fullMessage << "\n";
-    
-    auto& currentPattern = instance->m_pattern.at(logLevel);
-	
-    for(auto& o : instance->m_output) {
-        while(!currentPattern.empty()) {
-            const auto& token = currentPattern.next();
-            if(!o.applyTokenOnOutput(*this, token)) {
-                break;
-            }
-        }
-        currentPattern.rewind();
-    }
-
-    alreadyLogged = true;
-}
-
-
-
 

@@ -3,7 +3,7 @@
 #include "LogEntry.h"
 #include "LoggerImpl.h"
 #include "LogLevel.h"
-
+#include "LogContext.h"
 #include "LogSync.h"
 
 namespace ska {
@@ -32,8 +32,21 @@ namespace ska {
     class Logger : public loggerdetail::Logger {
 	private:
 		template<LogLevel logLevel>
-		loggerdetail::LogEntry<LogMethod> log(const char* className) {
-			return loggerdetail::LogEntry<LogMethod>{ *this, logLevel, m_logMethod, className };
+		LogEntry log(const char* className) {
+			return LogEntry{ std::bind(&decltype(*this)::onDestroyEntry, this, std::placeholders::_1), loggerdetail::LogContext { logLevel, className } };
+		}
+
+		void onDestroyEntry(const LogEntry& self) {
+			auto& currentPattern = m_pattern.at(logLevel);
+			for (auto& o : m_output) {
+				while (!currentPattern.empty()) {
+					const auto& token = currentPattern.next();
+					if (!o.applyTokenOnOutput(self, token)) {
+						break;
+					}
+				}
+				currentPattern.rewind();
+			}
 		}
 
 	public:
@@ -41,7 +54,6 @@ namespace ska {
         Logger(std::ostream& output, LogFilter filter) :
             loggerdetail::Logger(output, std::move(filter)) {
         }
-        
 		
 		template <LogLevel logLevel, class Wrapped>
 		auto log() {
