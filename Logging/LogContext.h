@@ -12,7 +12,8 @@ namespace ska {
 			//!! static memory data !!
 			const char* functionName = nullptr;
 			const char* filename = nullptr;
-			const char* line = nullptr;
+			
+			long line = 0;
 		};
 	}
 }

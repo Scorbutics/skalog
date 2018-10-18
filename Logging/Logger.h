@@ -30,26 +30,21 @@ namespace ska {
     
 	template <LogLevel MinLevel = LogLevel::Debug, LogLevel MaxLevel = LogLevel::Error, class LogMethod = LogSync>
     class Logger : public loggerdetail::Logger {
+		template <class ... LoggerC>
+		friend class MultiLogger;
+	
 	private:
 		template<LogLevel logLevel>
-		LogEntry log(const char* className) {
-			return LogEntry{ std::bind(&decltype(*this)::onDestroyEntry, this, std::placeholders::_1), loggerdetail::LogContext { logLevel, className } };
+		LogEntry log(const char* className, bool disabled) {
+			return LogEntry{ std::bind(&Logger::onDestroyEntry, this, std::placeholders::_1), loggerdetail::LogContext { logLevel, className }, disabled };
 		}
 
 		void onDestroyEntry(const LogEntry& self) {
-			auto& currentPattern = m_pattern.at(logLevel);
-			for (auto& o : m_output) {
-				while (!currentPattern.empty()) {
-					const auto& token = currentPattern.next();
-					if (!o.applyTokenOnOutput(self, token)) {
-						break;
-					}
-				}
-				currentPattern.rewind();
-			}
+			m_logMethod.log(self, *this);
 		}
 
 	public:
+
 		Logger() = default;
         Logger(std::ostream& output, LogFilter filter) :
             loggerdetail::Logger(output, std::move(filter)) {
@@ -59,7 +54,7 @@ namespace ska {
 		auto log() {
 			if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level &&
 				(logLevel >= MinLevel && logLevel <= MaxLevel)) {
-				return log<logLevel>(LoggerClassFormatter<Wrapped>::className);
+				return log<logLevel>(LoggerClassFormatter<Wrapped>::className, logLevel >= getLogLevel());
 			} else {
 				return loggerdetail::EmptyProxy{};
 			}
@@ -73,14 +68,13 @@ namespace ska {
 }
 
 #ifndef SKA_DONT_USE_LOG_DEFINE
-#define SKA_LOGC(logger, level, currentClass) logger.log<level, currentClass>()
+	#define SKA_LOGC(logger, level, currentClass) logger.log<level, currentClass>()
 
-#ifdef __PRETTY_FUNCTION__
-#define SKA_CURRENT_FUNCTION __PRETTY_FUNCTION__
-#elif defined(__FUNCSIG__)
-#define SKA_CURRENT_FUNCTION __FUNCSIG__ 
-#else
-#define SKA_CURRENT_FUNCTION __func__
-#endif
-
+	#ifdef __PRETTY_FUNCTION__
+	#define SKA_CURRENT_FUNCTION __PRETTY_FUNCTION__
+	#elif defined(__FUNCSIG__)
+	#define SKA_CURRENT_FUNCTION __FUNCSIG__ 
+	#else
+	#define SKA_CURRENT_FUNCTION __func__
+	#endif
 #endif

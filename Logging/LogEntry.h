@@ -11,32 +11,29 @@
 namespace ska {
 
     class LogEntry {
-		using LogCallback = std::function<void(LogEntry&)>;
-    protected:
-        LogEntry(LogCallback callback, loggerdetail::LogContext context) :
-			LogEntry(std::move(context)) {
-			this->callback = std::move(callback);
-        }
+		using LogCallback = std::function<void(const LogEntry&)>;
 
-		LogEntry(loggerdetail::LogContext context) :
+	public:
+		LogEntry(LogCallback callback, loggerdetail::LogContext context, bool disabled = false) :
 			id(InstanceCounter++),
 			context(std::move(context)),
-			date(currentDateTime()) {
+			date(currentDateTime()),
+			callback(callback),
+			disabled(disabled) {
 		}
 
-    public:
-        LogEntry(const LogEntry&) = delete;
-        LogEntry& operator=(const LogEntry&) = delete;
-
-        LogEntry(LogEntry&&) = default;
-        LogEntry& operator=(LogEntry&&) = default;
+        LogEntry(const LogEntry&) = default;
+		LogEntry(LogEntry&&) = default;
+        
+		LogEntry& operator=(const LogEntry&) = delete;
+		LogEntry& operator=(LogEntry&&) = delete;
 
 		~LogEntry() {
-			if (callback.has_value()) {
+			if (!disabled) {
 				//MUST NOT throw !
 				fullMessage << "\n";
-				callback.value()(*this);
-				callback.reset();
+				callback(*this);
+				disabled = true;
 			}
 		}
 
@@ -56,14 +53,21 @@ namespace ska {
             return id;
         }
 
+		LogEntry cloneMessage(LogCallback callback) const {
+			auto result = LogEntry {std::move(callback), context };
+			result.fullMessage << fullMessage.str();
+			return result;
+		}
+
     private:
         std::size_t id;
-		std::optional<LogCallback> callback;
+		LogCallback callback;
 		loggerdetail::LogContext context;
         //Mutable used safely because LogEntry is only a short time wrapper-class that is destroyed at the end of the log line
         mutable std::stringstream fullMessage;
         tm date;
-        
+		bool disabled;
+
 		static std::size_t InstanceCounter;
         static tm currentDateTime();
         
@@ -76,9 +80,11 @@ namespace ska {
     
     template <class T>
     const LogEntry& operator<<(const LogEntry& logEntry, T&& logPart) {
-        if (logEntry.logLevel >= logEntry.instance->m_logLevel) {
-            logEntry.fullMessage << std::forward<T>(logPart);
-        }
+		if (logEntry.disabled) {
+			return logEntry;
+		}
+
+        logEntry.fullMessage << std::forward<T>(logPart);
         return logEntry;
     }
     

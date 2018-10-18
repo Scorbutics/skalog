@@ -6,22 +6,20 @@
 #include "LogEntry.h"
 
 namespace ska {
+	namespace loggerdetail {
+		class Logger;
+	}
 
 	class LogPayload {
 	public:
 		LogPayload(std::function<void()> f) : lambda(std::move(f)) {}
-		LogPayload(LogEntry e) : entry(std::move(e)){}
+		LogPayload(const LogEntry& e, loggerdetail::Logger& logger) : entry(e), logger(&logger) {}
 
-		void operator()() {
-			if (entry.has_value()) {
-				entry.value().consumeTokens();
-			} else {
-				lambda();
-			}
-		}
+		void operator()();
 
 	private:
 		std::optional<LogEntry> entry;
+		loggerdetail::Logger* logger = nullptr;
 		std::function<void()> lambda;
 	};
 
@@ -29,8 +27,8 @@ namespace ska {
     private:
         ActiveObject<LogPayload> m_commander;
     public:
-        void log(LogEntry entry) {
-			m_commander.send(LogPayload{ std::move(entry) });
+		void log(const LogEntry& entry, loggerdetail::Logger& logger) {
+			m_commander.send(LogPayload{ entry, logger });
         }
     };
 }

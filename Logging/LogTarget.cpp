@@ -61,7 +61,7 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
             break;
 
 		case TokenType::Class:
-			output << entry.getClassName();
+			output << entry.getContext().className;
 			break;
 		
 		case TokenType::Literal:

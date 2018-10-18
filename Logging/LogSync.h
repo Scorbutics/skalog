@@ -3,10 +3,12 @@
 #include "LogEntry.h"
 
 namespace ska {
+	namespace loggerdetail {
+		class Logger;
+	}
+
     class LogSync {
     public:
-        void log(LogEntry entry) {
-            entry.consumeTokens();
-        }
+		void log(const LogEntry& entry, loggerdetail::Logger& logger);
     };
 }
