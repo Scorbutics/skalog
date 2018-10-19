@@ -20,7 +20,9 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
 
 	switch(token.type()) {
 		case TokenType::Color :
-			output << (static_cast<EnumColorStream>(token.length()));
+			if(m_supportsColoring) {
+				output << (static_cast<EnumColorStream>(token.length()));
+			}
 			break;
 		
 		case TokenType::Value :

@@ -11,16 +11,6 @@ ska::loggerdetail::Logger::Logger() :
 	m_pattern.emplace(LogLevel::Error, Tokenizer{ "%10c[%h:%m:%s:%T]%12c[Error] %14c%C %15c%v" });
 }
 
-ska::loggerdetail::Logger::Logger(std::ostream& output, LogFilter filter) :
-    m_logLevel(LogLevel::Debug) {
-    m_output.emplace_back(output, std::move(filter));
-    
-    m_pattern.emplace(LogLevel::Debug, Tokenizer { "%10c[%h:%m:%s:%T]%9c[Debug] %14c%C %15c%v" });
-    m_pattern.emplace(LogLevel::Info, Tokenizer { "%10c[%h:%m:%s:%T]%10c[Info] %14c%C %15c%v" });
-    m_pattern.emplace(LogLevel::Warn, Tokenizer { "%10c[%h:%m:%s:%T]%11c[Warn] %14c%C %15c%v" });
-    m_pattern.emplace(LogLevel::Error, Tokenizer { "%10c[%h:%m:%s:%T]%12c[Error] %14c%C %15c%v" });
-}
-
 void ska::loggerdetail::Logger::consumeNow(const LogEntry& self) {
 	assert (m_pattern.find(self.getContext().logLevel) != m_pattern.end());
 
@@ -34,4 +24,17 @@ void ska::loggerdetail::Logger::consumeNow(const LogEntry& self) {
 		}
 		currentPattern.rewind();
 	}
+}
+
+
+void ska::loggerdetail::Logger::setPattern(LogLevel logLevel, std::string pattern) {
+	auto existingLoglevel = m_pattern.find(logLevel);
+	if(existingLoglevel != m_pattern.end()) {
+		m_pattern.erase(existingLoglevel);
+	}
+	m_pattern.emplace(logLevel, Tokenizer {std::move(pattern)});
+}
+
+void ska::loggerdetail::Logger::addOutputTarget(std::ostream& output, LogFilter filter) {
+	m_output.emplace_back(output, filter, output.rdbuf() == std::cout.rdbuf());
 }

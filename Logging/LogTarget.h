@@ -11,9 +11,10 @@ namespace ska {
 
         class LogTarget {
         public:
-            LogTarget(std::ostream& output, LogFilter filter = GetIdentityLogFilter()) : 
+            LogTarget(std::ostream& output, LogFilter filter = GetIdentityLogFilter(), bool supportsColoring = false) : 
                 m_output(output),
-                m_filter(std::move(filter)) {
+                m_filter(std::move(filter)),
+				m_supportsColoring(supportsColoring) {
             }
 
             bool applyTokenOnOutput(const LogEntry& entry, const Token& token);
@@ -23,6 +24,7 @@ namespace ska {
 
             std::ostream& m_output;
             LogFilter m_filter;
+			bool m_supportsColoring;
         };
 
         

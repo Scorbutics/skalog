@@ -38,13 +38,17 @@ namespace ska {
 		LogEntry log(const char* className, bool disabled) {
 			return LogEntry{ std::bind(&Logger::onDestroyEntry, this, std::placeholders::_1), loggerdetail::LogContext { logLevel, className }, disabled };
 		}
-
+			
 		void onDestroyEntry(const LogEntry& self) {
 			m_logMethod.log(self, *this);
 		}
 
 	public:
-
+		template <LogLevel logLevel>
+		static constexpr bool accept() {
+			return (logLevel >= MinLevel && logLevel <= MaxLevel);
+		}
+	
 		Logger() = default;
         Logger(std::ostream& output, LogFilter filter) :
             loggerdetail::Logger(output, std::move(filter)) {
