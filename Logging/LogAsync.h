@@ -13,7 +13,7 @@ namespace ska {
 	class LogPayload {
 	public:
 		LogPayload(std::function<void()> f) : lambda(std::move(f)) {}
-		LogPayload(const LogEntry& e, loggerdetail::Logger& logger) : entry(e), logger(&logger) {}
+		LogPayload(LogEntry e, loggerdetail::Logger& logger) : entry(std::move(e)), logger(&logger) {}
 
 		void operator()();
 
@@ -28,6 +28,7 @@ namespace ska {
         ActiveObject<LogPayload> m_commander;
     public:
 		void log(const LogEntry& entry, loggerdetail::Logger& logger) {
+			//Copy the entry in the commander
 			m_commander.send(LogPayload{ entry, logger });
         }
     };

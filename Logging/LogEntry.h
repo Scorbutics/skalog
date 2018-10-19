@@ -22,7 +22,14 @@ namespace ska {
 			disabled(disabled) {
 		}
 
-        LogEntry(const LogEntry&) = default;
+		LogEntry(const LogEntry& e) {
+			id = e.id;
+			context = e.context;
+			date = e.date;
+			callback = e.callback;
+			disabled = e.disabled;
+			fullMessage << e.fullMessage.rdbuf();
+		}
 		LogEntry(LogEntry&&) = default;
         
 		LogEntry& operator=(const LogEntry&) = delete;
@@ -53,10 +60,9 @@ namespace ska {
             return id;
         }
 
-		LogEntry cloneMessage(LogCallback callback) const {
-			auto result = LogEntry {std::move(callback), context };
-			result.fullMessage << fullMessage.str();
-			return result;
+		void resetCallback(){
+			callback = LogCallback {};
+			disabled = true;
 		}
 
     private:
