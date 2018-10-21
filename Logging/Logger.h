@@ -36,16 +36,24 @@ namespace ska {
 	private:
 		template<LogLevel logLevel>
 		LogEntry log(const char* className, bool disabled) {
-			return LogEntry{ std::bind(&Logger::onDestroyEntry, this, std::placeholders::_1), loggerdetail::LogContext { logLevel, className }, disabled };
+			return LogEntry{ [this](const LogEntry& self) {
+				m_logMethod.log(self, *this);
+			}, loggerdetail::LogContext { logLevel, className }, disabled };
 		}
 
-		void onDestroyEntry(const LogEntry& self) {
-			m_logMethod.log(self, *this);
+		void onDestroyEntry(const LogEntry& entry) {
+			m_logMethod.log(entry, *this);
 		}
 
 	public:
-
 		Logger() = default;
+		
+		Logger(const Logger&) = delete;
+		Logger& operator=(const Logger&) = delete;
+		Logger& operator=(Logger&&) = delete;
+
+		Logger(Logger&&) = default;
+
         Logger(std::ostream& output, LogFilter filter) :
             loggerdetail::Logger(output, std::move(filter)) {
         }
@@ -72,7 +80,7 @@ namespace ska {
 
 	#ifdef __PRETTY_FUNCTION__
 	#define SKA_CURRENT_FUNCTION __PRETTY_FUNCTION__
-	#elif defined(__FUNCSIG__)
+	#elif defined __FUNCSIG__
 	#define SKA_CURRENT_FUNCTION __FUNCSIG__ 
 	#else
 	#define SKA_CURRENT_FUNCTION __func__
