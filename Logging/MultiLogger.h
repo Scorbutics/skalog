@@ -31,7 +31,9 @@ namespace ska {
 							copied.resetCallback();
 							for_each(m_loggers, [&](auto& logger) {
 								using Logger = typename std::remove_reference<decltype(logger)>::type;
-								logger.onDestroyEntry(copied);
+								if constexpr (Logger:: template accept<logLevel>()) {
+									logger.onDestroyEntry(copied);
+								}
 							});
 						},
 						loggerdetail::LogContext { logLevel, LoggerClassFormatter<Wrapped>::className, functionName, filename, line }
