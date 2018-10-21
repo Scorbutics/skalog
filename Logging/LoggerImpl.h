@@ -12,14 +12,13 @@ namespace ska {
 
     template <class T>
     const LogEntry& operator<<(const LogEntry& logEntry, T&& logPart);
-
+	
     namespace loggerdetail {
         class Logger {
             friend class ska::LogEntry;
         
         protected:
             Logger();
-            Logger(std::ostream& output, LogFilter filter);
 			
 			LogLevel getLogLevel() const {
 				return m_logLevel;
@@ -37,18 +36,8 @@ namespace ska {
             }
         
 			void consumeNow(const LogEntry& self);
-
-            void setPattern(LogLevel logLevel, std::string pattern) {
-                auto existingLoglevel = m_pattern.find(logLevel);
-                if(existingLoglevel != m_pattern.end()) {
-                    m_pattern.erase(existingLoglevel);
-                }
-                m_pattern.emplace(logLevel, Tokenizer {std::move(pattern)});
-            }
-
-            void addOutputTarget(std::ostream& output, LogFilter filter = loggerdetail::GetIdentityLogFilter()) {
-                m_output.emplace_back(output, filter);
-            }
+            void setPattern(LogLevel logLevel, std::string pattern);
+            void addOutputTarget(std::ostream& output, LogFilter filter = loggerdetail::GetIdentityLogFilter());
 
             ~Logger() = default;
 

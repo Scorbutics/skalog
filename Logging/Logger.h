@@ -40,12 +40,17 @@ namespace ska {
 				m_logMethod.log(self, *this);
 			}, loggerdetail::LogContext { logLevel, className }, disabled };
 		}
-
-		void onDestroyEntry(const LogEntry& entry) {
-			m_logMethod.log(entry, *this);
+			
+		void onDestroyEntry(const LogEntry& self) {
+			m_logMethod.log(self, *this);
 		}
 
 	public:
+		template <LogLevel logLevel>
+		static constexpr bool accept() {
+			return (logLevel >= MinLevel && logLevel <= MaxLevel);
+		}
+	
 		Logger() = default;
 		
 		Logger(const Logger&) = delete;
