@@ -1,4 +1,6 @@
+#include <utility>
 #include "LogContext.h"
+#include "Logger.h"
 
 namespace ska {
 	
@@ -23,7 +25,7 @@ namespace ska {
 
 		public:
 			template <LogLevel logLevel, class Wrapped, long line>
-			auto log(char* functionName, char* filename) {
+			auto log(const char* functionName, const char* filename) {
 				if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level) {
 					return LogEntry{ 
 						[&] (const LogEntry& entry) {
