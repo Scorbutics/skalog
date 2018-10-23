@@ -56,7 +56,7 @@ namespace ska {
             return date;
         }
 
-        const std::size_t getId() const {
+        std::size_t getId() const {
             return id;
         }
 
@@ -67,12 +67,12 @@ namespace ska {
 
     private:
         std::size_t id;
-		LogCallback callback;
 		loggerdetail::LogContext context;
         //Mutable used safely because LogEntry is only a short time wrapper-class that is destroyed at the end of the log line
         mutable std::stringstream fullMessage;
         tm date;
-		bool disabled;
+		LogCallback callback;
+        bool disabled;
 
 		static std::size_t InstanceCounter;
         static tm currentDateTime();
