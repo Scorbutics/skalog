@@ -1,3 +1,4 @@
+#if defined(unix) || defined(__unix) || defined(__unix__)
 #include <sstream>
 #include <vector>
 
@@ -35,3 +36,4 @@ void ska::loggerdetail::SetupSignalHandler() {
         }
     }
 }
+#endif

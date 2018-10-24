@@ -1,4 +1,6 @@
 #pragma once
+#if defined(unix) || defined(__unix) || defined(__unix__)
+
 #include <csignal>
 #include "SignalHandler.h"
 
@@ -17,3 +19,4 @@ namespace ska {
 
     }
 }
+#endif
