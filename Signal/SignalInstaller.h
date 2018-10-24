@@ -1,4 +1,5 @@
 #pragma once
+#include <mutex>
 #include "SignalHandler.h"
 
 namespace ska {

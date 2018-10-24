@@ -18,7 +18,7 @@ namespace ska {
 			return EXCEPTION_CONTINUE_SEARCH;
 	    }
 
-        void SetupSignalHandlerImpl() {
+        void SetupSignalHandler() {
 			g_previous_unexpected_exception_handler = SetUnhandledExceptionFilter(DefaultSignalHandler);
         }
     }

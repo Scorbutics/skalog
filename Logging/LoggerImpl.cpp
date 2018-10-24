@@ -3,6 +3,8 @@
 #include "LoggerImpl.h"
 #include "LogEntry.h"
 
+ska::loggerdetail::SignalInstaller ska::loggerdetail::Logger::SIGNAL_HANDLER_INSTALLER;
+
 ska::loggerdetail::Logger::Logger() :
 	m_logLevel(LogLevel::Debug) {
 	m_pattern.emplace(LogLevel::Debug, Tokenizer{ "%10c[%h:%m:%s:%T]%9c[Debug] %14c%C %15c%v" });

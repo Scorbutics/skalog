@@ -12,6 +12,3 @@ void SetupSignalHandlerImpl() {
 }
 #endif
 
-void ska::loggerdetail::SetupSignalHandler() {
-    SetupSignalHandlerImpl();
-}
