@@ -12,6 +12,8 @@ namespace ska {
             SIGSEGV,
             SIGFPE
         };
+    
+        void SignalHandlerAddActionImpl(SignalAction action);
 
     }
 }

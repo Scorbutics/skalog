@@ -16,7 +16,7 @@ namespace ska {
     }
 }
 
-void ska::loggerdetail::SignalHandlerAddAction(SignalAction action) {
+void ska::loggerdetail::SignalHandlerAddActionImpl(SignalAction action) {
     SIGNAL_ACTIONS_CONTAINER.push_back(std::move(action));
 }
 

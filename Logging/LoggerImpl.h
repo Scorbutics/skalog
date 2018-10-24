@@ -6,7 +6,6 @@
 #include "LogLevel.h"
 #include "Tokenizer.h"
 #include "LogTarget.h"
-#include "../Signal/SignalInstaller.h"
 
 namespace ska {
     class LogEntry;
@@ -47,8 +46,6 @@ namespace ska {
             std::vector<LogTarget> m_output;
             std::unordered_map<LogLevel, Tokenizer> m_pattern;
             
-            static SignalInstaller SIGNAL_HANDLER_INSTALLER;
-
             template <class T>
 			friend const ska::LogEntry& ska::operator<<(const ska::LogEntry& logEntry, T&& logPart);
         };

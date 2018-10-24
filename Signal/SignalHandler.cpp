@@ -1,4 +1,5 @@
 #include "SignalHandler.h"
+#include "SignalInstaller.h"
 
 #ifdef _WIN32
 #include "SignalHandlerWindows.h"
@@ -11,4 +12,9 @@ void SetupSignalHandlerImpl() {
     std::cout << "Warning : no crash handler installed because the platform is unknown." << std::endl;
 }
 #endif
+
+void ska::loggerdetail::SignalHandlerAddAction(SignalAction action) {
+    static SignalInstaller SIGNAL_HANDLER_INSTALLER;
+    SignalHandlerAddActionImpl(std::move(action));      
+}
 
