@@ -1,19 +1,16 @@
-#include <ctime>
+#include <chrono>
 #include <cassert>
-#include <iomanip>
 #include "LogEntry.h"
 #include "ColorStream.h"
 
 std::size_t ska::LogEntry::InstanceCounter = 0u;
 
 tm ska::LogEntry::currentDateTime() {
-	auto t = std::time(nullptr);
-#ifdef _MSC_VER
-	tm buf;
-	localtime_s(&buf, &t);
-#else
-	tm buf = *std::localtime(&t);
-#endif
+	
+    using namespace std::chrono; 
+    milliseconds ms = duration_cast< milliseconds >( system_clock::now().time_since_epoch() );
+    std::size_t absoluteTime = ms.count(); 
+    
 	return buf;
 }
 
