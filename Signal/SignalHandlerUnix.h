@@ -8,7 +8,7 @@ namespace ska {
     namespace process {
         namespace detail {
             const int SignalCodeList[] = {
-                SIGINT,
+                SIGILL,
                 SIGTERM,
                 SIGABRT,
                 SIGSEGV,
