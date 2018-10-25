@@ -2,7 +2,7 @@
 #include <functional>
 
 namespace ska {
-    namespace loggerdetail {
+    namespace process {
         using SignalAction = std::function<void(int)>;
         
         void SetupSignalHandler();

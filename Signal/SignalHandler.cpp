@@ -13,8 +13,8 @@ void SetupSignalHandlerImpl() {
 }
 #endif
 
-void ska::loggerdetail::SignalHandlerAddAction(SignalAction action) {
+void ska::process::SignalHandlerAddAction(SignalAction action) {
     static SignalInstaller SIGNAL_HANDLER_INSTALLER;
-    SignalHandlerAddActionImpl(std::move(action));      
+    detail::SignalHandlerAddActionImpl(std::move(action));      
 }
 

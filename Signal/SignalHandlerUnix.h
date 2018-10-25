@@ -5,18 +5,18 @@
 #include "SignalHandler.h"
 
 namespace ska {
-    namespace loggerdetail {
-
-        const int SignalCodeList[] = {
-            SIGINT,
-            SIGTERM,
-            SIGABRT,
-            SIGSEGV,
-            SIGFPE
-        };
+    namespace process {
+        namespace detail {
+            const int SignalCodeList[] = {
+                SIGINT,
+                SIGTERM,
+                SIGABRT,
+                SIGSEGV,
+                SIGFPE
+            };
     
-        void SignalHandlerAddActionImpl(SignalAction action);
-
+            void SignalHandlerAddActionImpl(SignalAction action);
+        }
     }
 }
 #endif

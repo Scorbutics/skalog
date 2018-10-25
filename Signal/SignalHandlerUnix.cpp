@@ -6,29 +6,31 @@
 #include "SignalHandlerUnix.h"
 
 namespace ska {
-    namespace loggerdetail {
-        std::vector<SignalAction> SIGNAL_ACTIONS_CONTAINER;
+    namespace process {
+        namespace detail {
+            std::vector<SignalAction> SIGNAL_ACTIONS_CONTAINER;
 
-        void DefaultSignalHandler(int signalCode, siginfo_t*, void*) {
-            for(auto& action : SIGNAL_ACTIONS_CONTAINER) {
-                action(signalCode);
+            void DefaultSignalHandler(int signalCode, siginfo_t*, void*) {
+                for(auto& action : SIGNAL_ACTIONS_CONTAINER) {
+                    action(signalCode);
+                }
             }
         }
     }
 }
 
-void ska::loggerdetail::SignalHandlerAddActionImpl(SignalAction action) {
+void ska::process::detail::SignalHandlerAddActionImpl(SignalAction action) {
     SIGNAL_ACTIONS_CONTAINER.push_back(std::move(action));
 }
 
-void ska::loggerdetail::SetupSignalHandler() {
+void ska::process::SetupSignalHandler() {
     struct sigaction new_action; 
     sigemptyset(&new_action.sa_mask); 
     
-    new_action.sa_sigaction = &DefaultSignalHandler; 
+    new_action.sa_sigaction = &detail::DefaultSignalHandler; 
     new_action.sa_flags = SA_SIGINFO;
 
-    for(const auto& signalCode : SignalCodeList) {
+    for(const auto& signalCode : detail::SignalCodeList) {
         if(sigaction (signalCode, &new_action, NULL) < 0) {
             auto ss = std::stringstream{};
             ss << "Error while setting up signal handler for the signal " << signalCode;

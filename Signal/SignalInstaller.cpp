@@ -1,8 +1,8 @@
 #include "SignalInstaller.h"
 
-std::once_flag ska::loggerdetail::SignalInstaller::m_installed;
+std::once_flag ska::process::SignalInstaller::m_installed;
 
-ska::loggerdetail::SignalInstaller::SignalInstaller() {
+ska::process::SignalInstaller::SignalInstaller() {
 	std::call_once(m_installed, [] {
         SetupSignalHandler();
 	});

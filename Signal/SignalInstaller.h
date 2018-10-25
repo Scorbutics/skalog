@@ -3,7 +3,7 @@
 #include "SignalHandler.h"
 
 namespace ska {
-	namespace loggerdetail {
+	namespace process {
 		class SignalInstaller {
 		public:
 			SignalInstaller();
