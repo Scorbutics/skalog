@@ -34,11 +34,11 @@ namespace ska {
 		friend class MultiLogger;
 	
 	private:
-		template<LogLevel logLevel>
-		LogEntry log(const char* className, bool disabled) {
+		template<LogLevel logLevel, unsigned long line>
+		LogEntry log(const char* className, bool disabled, const char* functionName, const char* filename) {
 			return LogEntry{ [this](const LogEntry& self) {
 				m_logMethod.log(self, *this);
-			}, loggerdetail::LogContext { logLevel, className }, disabled };
+			}, loggerdetail::LogContext { logLevel, className, functionName, filename, line }, disabled };
 		}
 			
 		void onDestroyEntry(const LogEntry& self) {
@@ -63,11 +63,11 @@ namespace ska {
             loggerdetail::Logger(output, std::move(filter)) {
         }
 		
-		template <LogLevel logLevel, class Wrapped>
-		auto log() {
+		template <LogLevel logLevel, class Wrapped, unsigned long line = 0l>
+		auto log(const char* functionName = "", const char* filename = "") {
 			if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level &&
 				(logLevel >= MinLevel && logLevel <= MaxLevel)) {
-				return log<logLevel>(LoggerClassFormatter<Wrapped>::className, logLevel >= getLogLevel());
+				return log<logLevel, line>(LoggerClassFormatter<Wrapped>::className, logLevel >= getLogLevel(), functionName, filename);
 			} else {
 				return loggerdetail::EmptyProxy{};
 			}

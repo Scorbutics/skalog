@@ -92,6 +92,15 @@ std::pair<std::string, ska::loggerdetail::TokenType> ska::loggerdetail::Tokenize
             case 's':
                 tokenType = TokenType::Second;
                 break;
+            case 'l':
+                tokenType = TokenType::Line;
+                break;
+            case 'f':
+                tokenType = TokenType::Function;
+                break;
+            case 'F':
+                tokenType = TokenType::File;
+                break;
             case 'T':
                 tokenType = TokenType::MilliSecond;
                 break;

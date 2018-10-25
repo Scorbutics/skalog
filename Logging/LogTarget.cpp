@@ -64,9 +64,21 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
             break;
 
 		case TokenType::Class:
-			output << entry.getContext().className;
+            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().className;
 			break;
-		
+	    
+        case TokenType::File:
+            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().file;
+            break;
+        
+        case TokenType::Function:
+            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().function;
+            break;
+
+        case TokenType::Line:
+            output << std::setfill('0') << std::setw(token.length()) << entry.getContext().line;
+            break;
+
 		case TokenType::Literal:
 		    output << token.value();
 			break;

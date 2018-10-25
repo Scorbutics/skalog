@@ -10,10 +10,10 @@ namespace ska {
 			std::string className;
 
 			//!! static memory data !!
-			const char* functionName = nullptr;
-			const char* filename = nullptr;
+			const char* function = nullptr;
+			const char* file = nullptr;
 			
-			long line = 0;
+			unsigned long line = 0;
 		};
 	}
 }

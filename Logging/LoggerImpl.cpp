@@ -5,10 +5,10 @@
 
 ska::loggerdetail::Logger::Logger() :
 	m_logLevel(LogLevel::Debug) {
-	m_pattern.emplace(LogLevel::Debug, Tokenizer{ "%10c[%h:%m:%s:%T]%9c[Debug] %14c%C %15c%v" });
-	m_pattern.emplace(LogLevel::Info, Tokenizer{ "%10c[%h:%m:%s:%T]%10c[Info] %14c%C %15c%v" });
-	m_pattern.emplace(LogLevel::Warn, Tokenizer{ "%10c[%h:%m:%s:%T]%11c[Warn] %14c%C %15c%v" });
-	m_pattern.emplace(LogLevel::Error, Tokenizer{ "%10c[%h:%m:%s:%T]%12c[Error] %14c%C %15c%v" });
+	m_pattern.emplace(LogLevel::Debug, Tokenizer{ "%10c[%h:%m:%s:%T]%9c[Debug] %14c%F %15c%v" });
+	m_pattern.emplace(LogLevel::Info, Tokenizer{ "%10c[%h:%m:%s:%T]%10c[Info ] %14c%F %15c%v" });
+	m_pattern.emplace(LogLevel::Warn, Tokenizer{ "%10c[%h:%m:%s:%T]%11c[Warn ] %14c%F %15c%v" });
+	m_pattern.emplace(LogLevel::Error, Tokenizer{ "%10c[%h:%m:%s:%T]%12c[Error] %14c%F %15c%v" });
 }
 
 void ska::loggerdetail::Logger::consumeNow(const LogEntry& self) {

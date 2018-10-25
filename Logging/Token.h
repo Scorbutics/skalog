@@ -6,6 +6,9 @@ namespace ska {
         enum class TokenType {
             Color,
 			Class,
+            File,
+            Function,
+            Line,
             Identifier,
             Value,
             Year,

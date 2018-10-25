@@ -23,7 +23,7 @@ namespace ska {
 		}
 
 	public:
-		template <LogLevel logLevel, class Wrapped, long line>
+		template <LogLevel logLevel, class Wrapped, unsigned long line>
 		auto log(const char* functionName, const char* filename) {
 			if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level) {
 				return LogEntry{ 
