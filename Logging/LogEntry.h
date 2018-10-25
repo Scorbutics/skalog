@@ -3,13 +3,22 @@
 #include <sstream>
 #include <cassert>
 #include <optional>
+#include <ctime>
+#include <chrono>
 #include "LogLevel.h"
 #include "LogContext.h"
 #include "Tokenizer.h"
 #include "LoggerImpl.h"
 
 namespace ska {
-
+	
+	namespace loggerdetail {
+		struct LogTimePoint {
+			tm date;
+			std::size_t milliseconds;
+		};
+	}
+	
     class LogEntry {
 		using LogCallback = std::function<void(const LogEntry&)>;
 
@@ -52,7 +61,7 @@ namespace ska {
             return fullMessage.str();
         }
 
-        const tm& getDate() const {
+        const loggerdetail::LogTimePoint& getDate() const {
             return date;
         }
 
@@ -70,12 +79,12 @@ namespace ska {
 		loggerdetail::LogContext context;
         //Mutable used safely because LogEntry is only a short time wrapper-class that is destroyed at the end of the log line
         mutable std::stringstream fullMessage;
-        tm date;
+        loggerdetail::LogTimePoint date;
 		LogCallback callback;
         bool disabled;
 
 		static std::size_t InstanceCounter;
-        static tm currentDateTime();
+        static loggerdetail::LogTimePoint currentDateTime();
         
         template <class T>
         friend const LogEntry& operator<<(const LogEntry& logEntry, T&& logPart);

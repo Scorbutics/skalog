@@ -1,5 +1,7 @@
-#include <iomanip>
 #include <cassert>
+
+//setfill, setw
+#include <iomanip>
 
 #include "LogTarget.h"
 #include "LogEntry.h"
@@ -15,7 +17,7 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
     }
 
     auto& output = m_output;
-    const tm& date = entry.getDate(); 
+    const auto& date = entry.getDate(); 
     const std::string& logMessage = entry.getMessage();
 
 	switch(token.type()) {
@@ -30,32 +32,31 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
 			break;
 
 		case TokenType::Year :
-			output << std::put_time(&date, "%Y");
+			output << (date.date.tm_year + 1900);
 			break;
 		
 		case TokenType::Month :
-			output << std::put_time(&date, "%m");
+			output << std::setfill('0') << std::setw(2) << (date.date.tm_mon + 1);
 			break;
 		
 		case TokenType::Day :
-			output << std::put_time(&date, "%d");
+			output << std::setfill('0') << std::setw(2) << date.date.tm_mday;
 			break;
 		
 		case TokenType::Hour :
-			output << std::put_time(&date, "%H");
+			output << std::setfill('0') << std::setw(2) << date.date.tm_hour;
 			break;
 		
 		case TokenType::Minute :
-			output << std::put_time(&date, "%M");
+			output << std::setfill('0') << std::setw(2) << date.date.tm_min;
 			break;
 		
 		case TokenType::Second :
-			output << std::put_time(&date, "%S");
+			output << std::setfill('0') << std::setw(2) << date.date.tm_sec;
 			break;
 	
         case TokenType::MilliSecond :
-            //TODO : not available with localtime
-            output << "??";
+            output << std::setfill('0') << std::setw(3) << date.milliseconds;
             break;
 
         case TokenType::Identifier:

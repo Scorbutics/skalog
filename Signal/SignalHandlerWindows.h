@@ -26,7 +26,7 @@ namespace ska {
         }
 
         void SetupSignalHandler() {
-            detail::UNHANDLED_EXCEPTION_HANDLER = SetUnhandledExceptionFilter(detaill::DefaultSignalHandler);
+            detail::UNHANDLED_EXCEPTION_HANDLER = SetUnhandledExceptionFilter(detail::DefaultSignalHandler);
         }
 
 		
