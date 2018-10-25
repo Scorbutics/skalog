@@ -31,6 +31,10 @@ namespace ska {
 			//Copy the entry in the commander
 			m_commander.send(LogPayload{ entry, logger });
         }
+		
+		void terminate() {
+			m_commander.terminate();
+		}
     };
 }
 

@@ -10,5 +10,6 @@ namespace ska {
     class LogSync {
     public:
 		void log(const LogEntry& entry, loggerdetail::Logger& logger);
+		void terminate() {}
     };
 }

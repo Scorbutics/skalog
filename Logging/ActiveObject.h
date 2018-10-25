@@ -29,7 +29,7 @@ namespace ska {
                 message();
             }
         }
-    
+    	
     public:
         ActiveObjectInner(ActiveObjectInner&&) = default;
         ActiveObjectInner& operator=(ActiveObjectInner&&) = default;
@@ -39,12 +39,18 @@ namespace ska {
         }
 
         ~ActiveObjectInner() {
-			send(Command{ [this]() {
-				m_done = true;
-			} });
-            m_thread.join();
+			terminate();
         }
-        
+
+		void terminate() {
+			if(!m_done) {
+				send(Command{ [this]() {
+					m_done = true;
+				} });
+				m_thread.join();
+			}
+		}		
+    
     };
 
 	template <class Command>
@@ -57,6 +63,11 @@ namespace ska {
         void send(Command callback) {
             inner->send(std::move(callback));
         }
+		
+		void terminate() {
+			inner->terminate();
+		}
+		
     private:
         std::unique_ptr<ActiveObjectInner<Command>> inner;
     };

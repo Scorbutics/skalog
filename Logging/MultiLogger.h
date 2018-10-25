@@ -45,6 +45,12 @@ namespace ska {
 			}
 		}
 
+		void terminate() {
+			for_each(m_loggers, [&](auto& logger) {
+				logger.terminate();
+			});
+		}
+		
 		//Direct access for settings
 		template <std::size_t index>
 		auto& get() {

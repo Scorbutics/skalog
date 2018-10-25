@@ -8,8 +8,10 @@
 #else
 #include <iostream>
 //Unknown platform, do nothing but log the problem
-void SetupSignalHandlerImpl() {
-    std::cout << "Warning : no crash handler installed because the platform is unknown." << std::endl;
+namespace detail {
+	void SetupSignalHandlerImpl() {
+		std::cout << "Warning : no crash handler installed because the platform is unknown." << std::endl;
+	}
 }
 #endif
 

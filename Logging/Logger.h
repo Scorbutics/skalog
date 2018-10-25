@@ -73,6 +73,10 @@ namespace ska {
 			}
 		}
 
+		void terminate() {
+			m_logMethod.terminate();
+		}
+		
         ~Logger() = default;
     
     private:
