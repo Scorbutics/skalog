@@ -11,12 +11,14 @@ namespace ska {
         namespace detail {
             std::unique_ptr<std::vector<SignalAction>> SIGNAL_ACTIONS_CONTAINER;
 
-            void DefaultSignalHandler(int signalCode, siginfo_t*, void*) {
-                for(auto& action : (*SIGNAL_ACTIONS_CONTAINER)) {
-                    action(signalCode);
-                }
-            }
+            
         }
+    }
+}
+
+extern "C" void SkaProcessDetailDefaultSignalHandler(int signalCode, siginfo_t*, void*) {
+    for(auto& action : (*ska::process::detail::SIGNAL_ACTIONS_CONTAINER)) {
+        action(signalCode);
     }
 }
 
@@ -29,7 +31,7 @@ void ska::process::SetupSignalHandler() {
     struct sigaction new_action; 
     sigemptyset(&new_action.sa_mask); 
     
-    new_action.sa_sigaction = &detail::DefaultSignalHandler; 
+    new_action.sa_sigaction = &SkaProcessDetailDefaultSignalHandler; 
     new_action.sa_flags = SA_SIGINFO;
 
     for(const auto& signalCode : detail::SignalCodeList) {
