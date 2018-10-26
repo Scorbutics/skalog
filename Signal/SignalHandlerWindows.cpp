@@ -1,4 +1,5 @@
 #ifdef _WIN32
+#include <iostream>
 #include <memory>
 #include "SignalHandlerWindows.h"
 

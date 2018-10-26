@@ -1,5 +1,8 @@
 #include <cassert>
 
+//strchr
+#include <cstring>
+
 //setfill, setw
 #include <iomanip>
 
@@ -9,6 +12,17 @@
 
 bool ska::loggerdetail::LogTarget::isATarget(const ska::LogEntry& entry) {
     return m_filter(entry);
+}
+
+namespace ska {
+	namespace loggerdetail {
+		std::size_t ExtractFileName(const char* path) {
+			const auto length = strlen(path);
+			int index;
+			for(index = length - 1; index >= 0 && !(path[index] == '\\' || path[index] == '/'); index--);
+			return static_cast<std::size_t>(index + 1);
+		}
+	}
 }
 
 bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry, const Token& token) {
@@ -64,15 +78,15 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
             break;
 
 		case TokenType::Class:
-            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().className;
+            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().className.substr(0, token.length());
 			break;
 	    
         case TokenType::File:
-            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().file;
-            break;
+            output << std::setfill(' ') << std::setw(token.length()) << std::string(entry.getContext().file + ExtractFileName(entry.getContext().file)).substr(0, token.length());
+		break;
         
         case TokenType::Function:
-            output << std::setfill(' ') << std::setw(token.length()) << entry.getContext().function;
+            output << std::setfill(' ') << std::setw(token.length()) << std::string(entry.getContext().function).substr(0, token.length());
             break;
 
         case TokenType::Line:
