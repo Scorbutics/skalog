@@ -214,9 +214,8 @@ TEST_CASE("[Logger] Sync - Compile time limited range log level") {
 }
 
 TEST_CASE("[Logger] Async - Basic tests") {
-
 	using LoggerTest = ska::Logger<ska::LogLevel::Debug, ska::LogLevel::Error, ska::LogAsync>;
-	auto ss = std::stringstream{"", std::stringstream::in | std::stringstream::out | std::stringstream::ate };
+	auto ss = std::stringstream {};
 	auto logger = LoggerTest{};
 	logger.addOutputTarget(ss);
 
@@ -232,3 +231,6 @@ TEST_CASE("[Logger] Async - Basic tests") {
 	}
 }
 
+TEST_CASE("[Logger] Sync - Compile time Full range log levels - Class dependant tests") {
+	//TODO
+}
