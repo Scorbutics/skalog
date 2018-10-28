@@ -1,21 +1,9 @@
 cmake_minimum_required(VERSION 3.9)
-project(skalog)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-file(GLOB_RECURSE SOURCES
-	RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
-    *.h
-    *.cpp
-)
-
-string(REGEX REPLACE "CMakeFiles/[^;]+;?" "" SOURCES "${SOURCES}")
-
-set(SKA_DEBUG_DIR "Debug")
-set(SKA_RELEASE_DIR "Release")
-
-add_library(skalog STATIC ${SOURCES})
-set_target_properties(skalog PROPERTIES
-		ARCHIVE_OUTPUT_DIRECTORY ${SKA_DEBUG_DIR}
-	      	ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${SKA_DEBUG_DIR}
-        	ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${SKA_RELEASE_DIR})
+add_subdirectory(src)
+add_subdirectory(test)

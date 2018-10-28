@@ -19,11 +19,11 @@ namespace ska {
 			}
 
 			auto begin() const noexcept {
-				return m_tokens.begin();
+				return m_tokens.cbegin();
 			}
 
 			auto end() const noexcept {
-				return m_tokens.end();
+				return m_tokens.cend();
 			}
 
         private:

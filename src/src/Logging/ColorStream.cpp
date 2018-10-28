@@ -1,5 +1,5 @@
 #include "ColorStream.h"
-#include "../external/rlutil/rlutil.h"
+#include <rlutil.h>
 
 std::ostream& ska::operator<<(std::ostream& stream, const ska::EnumColorStream& color) {
 	switch (color) {
