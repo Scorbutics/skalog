@@ -25,11 +25,12 @@ namespace ska {
 	public:
 		template <LogLevel logLevel, class Wrapped, unsigned long line>
 		auto log(const char* functionName, const char* filename) {
+			static_assert(logLevel != LogLevel::Disabled, "Unable to log at log level \"Disabled\"");
 			if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level) {
 				return LogEntry{ 
-					[&] (const LogEntry& entry) {
+					[&] (LogEntry& entry) {
 						auto copied = entry;
-						copied.resetCallback();
+						copied.disable();
 						for_each(m_loggers, [&](auto& logger) {
 							using LoggerType = typename std::remove_reference<decltype(logger)>::type;
 							constexpr auto should = LoggerType::template accept<logLevel>();

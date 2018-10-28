@@ -35,7 +35,7 @@ namespace ska {
                 m_logLevel = logLevel;
             }
         
-			void consumeNow(const LogEntry& self);
+			void consumeNow(LogEntry& self);
             void setPattern(LogLevel logLevel, std::string pattern);
             void addOutputTarget(std::ostream& output, LogFilter filter = loggerdetail::GetIdentityLogFilter());
 

@@ -19,6 +19,7 @@ namespace ska {
 
             void applyTokenOnOutput(const LogEntry& entry, const Token& token);
 			bool isATarget(const LogEntry& entry);
+			void end();
 
         private:
             std::ostream& m_output;

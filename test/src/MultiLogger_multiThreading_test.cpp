@@ -1,3 +1,4 @@
+#ifdef LOGGER_TEST_MULTI_THREAD
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -37,3 +38,4 @@ TEST_CASE("[MultiLogger] Multi threaded") {
 
 	std::remove(filename);
 }
+#endif

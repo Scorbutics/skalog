@@ -1,6 +1,6 @@
 #pragma once
 
-#include <optional>
+#include <memory>
 
 #include "ActiveObject.h"
 #include "LogEntry.h"
@@ -11,14 +11,17 @@ namespace ska {
 	}
 
 	class LogPayload {
+		using LogEntryPtr = std::unique_ptr<LogEntry>;
 	public:
 		LogPayload(std::function<void()> f) : lambda(std::move(f)) {}
-		LogPayload(LogEntry e, loggerdetail::Logger& logger) : entry(std::move(e)), logger(&logger) {}
+		LogPayload(LogEntry e, loggerdetail::Logger& logger) :
+			entry(std::make_unique<LogEntry>(std::move(e))), 
+			logger(&logger) {}
 
 		void operator()();
 
 	private:
-		std::optional<LogEntry> entry;
+		LogEntryPtr entry;
 		loggerdetail::Logger* logger = nullptr;
 		std::function<void()> lambda;
 	};

@@ -11,7 +11,7 @@ ska::loggerdetail::Logger::Logger() :
 	m_pattern.emplace(LogLevel::Error, Tokenizer{ "%10c[%h:%m:%s:%T]%12c[Error]%8c(%12F l.%4l) %15c%v" });
 }
 
-void ska::loggerdetail::Logger::consumeNow(const LogEntry& self) {
+void ska::loggerdetail::Logger::consumeNow(LogEntry& self) {
 	assert (m_pattern.find(self.getContext().logLevel) != m_pattern.end());
 	auto& currentPattern = m_pattern.at(self.getContext().logLevel);
 	for (auto& o : m_output) {
@@ -19,8 +19,10 @@ void ska::loggerdetail::Logger::consumeNow(const LogEntry& self) {
 			for (auto& token : currentPattern) {
 				o.applyTokenOnOutput(self, token);
 			}
+			o.end();
 		}
 	}
+	self.disable();
 }
 
 void ska::loggerdetail::Logger::setPattern(LogLevel logLevel, std::string pattern) {

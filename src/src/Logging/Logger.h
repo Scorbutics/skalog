@@ -33,10 +33,12 @@ namespace ska {
 		template <class ... LoggerC>
 		friend class MultiLogger;
 	
+	static_assert(MinLevel <= MaxLevel, "Max log level must be greater or equal than Min log level");
+
 	private:
 		template<LogLevel logLevel, unsigned long line>
 		LogEntry log(const char* className, bool disabled, const char* functionName, const char* filename) {
-			return LogEntry{ [this](const LogEntry& self) {
+			return LogEntry{ [this](LogEntry& self) {
 				m_logMethod.log(self, *this);
 			}, loggerdetail::LogContext { logLevel, className, functionName, filename, line }, disabled };
 		}
@@ -65,9 +67,10 @@ namespace ska {
 		
 		template <LogLevel logLevel, class Wrapped, unsigned long line = 0l>
 		auto log(const char* functionName = "", const char* filename = "") {
+			static_assert(logLevel != LogLevel::Disabled, "Unable to log at log level \"Disabled\"");
 			if constexpr (logLevel >= LoggerClassLevel<Wrapped>::level &&
 				(logLevel >= MinLevel && logLevel <= MaxLevel)) {
-				return log<logLevel, line>(LoggerClassFormatter<Wrapped>::className, logLevel >= getLogLevel(), functionName, filename);
+				return log<logLevel, line>(LoggerClassFormatter<Wrapped>::className, logLevel < getLogLevel(), functionName, filename);
 			} else {
 				return loggerdetail::EmptyProxy{};
 			}

@@ -20,7 +20,7 @@ namespace ska {
 	}
 	
     class LogEntry {
-		using LogCallback = std::function<void(const LogEntry&)>;
+		using LogCallback = std::function<void(LogEntry&)>;
 
 	public:
 		LogEntry(LogCallback callback, loggerdetail::LogContext context, bool disabled = false) :
@@ -39,7 +39,16 @@ namespace ska {
 			disabled = e.disabled;
 			fullMessage << e.fullMessage.rdbuf();
 		}
-		LogEntry(LogEntry&&) = default;
+
+		LogEntry(LogEntry&& e) {
+			id = e.id;
+			context = e.context;
+			date = e.date;
+			e.callback.swap(callback);
+			disabled = e.disabled;
+			e.disabled = true;
+			fullMessage << e.fullMessage.str();
+		}
         
 		LogEntry& operator=(const LogEntry&) = delete;
 		LogEntry& operator=(LogEntry&&) = delete;
@@ -47,7 +56,6 @@ namespace ska {
 		~LogEntry() {
 			if (!disabled) {
 				//MUST NOT throw !
-				fullMessage << "\n";
 				callback(*this);
 				disabled = true;
 			}
@@ -69,7 +77,7 @@ namespace ska {
             return id;
         }
 
-		void resetCallback(){
+		void disable(){
 			callback = LogCallback {};
 			disabled = true;
 		}

@@ -98,3 +98,7 @@ void ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
 	}
 }
 
+void ska::loggerdetail::LogTarget::end() {
+	m_output << '\n';
+}
+
