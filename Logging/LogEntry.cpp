@@ -16,6 +16,6 @@ ska::loggerdetail::LogTimePoint ska::LogEntry::currentDateTime() {
 		tm buf = *std::localtime(&t);
 	#endif
 	
-	return { buf, ms%1000 }; 
+	return { buf, static_cast<std::size_t>(ms%1000) }; 
 }
 

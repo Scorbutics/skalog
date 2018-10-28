@@ -4,22 +4,27 @@
 
 namespace ska {
 	namespace loggerdetail {
+		
 		class Tokenizer {
         public:
             Tokenizer(const std::string& str);
             ~Tokenizer() = default;
-            
-            const Token& next() {
-                return m_cursor < m_tokens.size() ? m_tokens[m_cursor++] : m_emptyToken;
-            }
 
-            bool empty() const {
-                return m_cursor >= m_tokens.size();
-            }
+			auto cbegin() const noexcept {
+				return m_tokens.cbegin();
+			}
 
-            void rewind() {
-                m_cursor = 0;
-            }
+			auto cend() const noexcept {
+				return m_tokens.cend();
+			}
+
+			auto begin() const noexcept {
+				return m_tokens.begin();
+			}
+
+			auto end() const noexcept {
+				return m_tokens.end();
+			}
 
         private:
             static std::vector<Token> parse(const std::string& str);
@@ -31,8 +36,6 @@ namespace ska {
             static std::pair<std::string, TokenType> matchCharacterNonNumeric(const std::string& str, std::size_t& index);
 
 			std::vector<Token> m_tokens;
-            std::size_t m_cursor = 0;
-            Token m_emptyToken;
         };
 	}
 }

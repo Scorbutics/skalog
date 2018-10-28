@@ -13,16 +13,13 @@ ska::loggerdetail::Logger::Logger() :
 
 void ska::loggerdetail::Logger::consumeNow(const LogEntry& self) {
 	assert (m_pattern.find(self.getContext().logLevel) != m_pattern.end());
-
 	auto& currentPattern = m_pattern.at(self.getContext().logLevel);
 	for (auto& o : m_output) {
-		while (!currentPattern.empty()) {
-			const auto& token = currentPattern.next();
+		for (auto& token : currentPattern) {
 			if (!o.applyTokenOnOutput(self, token)) {
 				break;
 			}
 		}
-		currentPattern.rewind();
 	}
 }
 
