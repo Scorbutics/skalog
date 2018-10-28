@@ -14,3 +14,5 @@ file(GLOB_RECURSE SOURCES
 string(REGEX REPLACE "[^;]*CMakeFiles/[^;]+;?" "" SOURCES "${SOURCES}")
 
 add_executable(skalog_test ${SOURCES})
+find_package(Threads REQUIRED)
+target_link_libraries(skalog_test skalog Threads::Threads)
