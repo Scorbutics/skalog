@@ -17,11 +17,10 @@ namespace ska {
 				m_supportsColoring(supportsColoring) {
             }
 
-            bool applyTokenOnOutput(const LogEntry& entry, const Token& token);
-        
-        private:
-            bool isATarget(const LogEntry& entry);    
+            void applyTokenOnOutput(const LogEntry& entry, const Token& token);
+			bool isATarget(const LogEntry& entry);
 
+        private:
             std::ostream& m_output;
             LogFilter m_filter;
 			bool m_supportsColoring;

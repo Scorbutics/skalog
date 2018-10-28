@@ -1,8 +1,5 @@
 #include <cassert>
 
-//strchr
-#include <cstring>
-
 //setfill, setw
 #include <iomanip>
 
@@ -25,11 +22,7 @@ namespace ska {
 	}
 }
 
-bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry, const Token& token) {
-    if(!isATarget(entry)) {
-        return false;
-    }
-
+void ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry, const Token& token) {
     auto& output = m_output;
     const auto& date = entry.getDate(); 
     const std::string& logMessage = entry.getMessage();
@@ -103,6 +96,5 @@ bool ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
 		default:
 			assert(false);
 	}
-    return true;
 }
 

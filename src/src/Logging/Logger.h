@@ -84,8 +84,7 @@ namespace ska {
     };
 }
 
-#ifndef SKA_DONT_USE_LOG_DEFINE
-	#define SKA_LOGC(logger, level, currentClass) logger.log<level, currentClass>()
+#ifndef SKA_LOG_DONT_USE_LOG_DEFINE
 
 	#ifdef __PRETTY_FUNCTION__
 	#define SKA_CURRENT_FUNCTION __PRETTY_FUNCTION__
@@ -94,4 +93,15 @@ namespace ska {
 	#else
 	#define SKA_CURRENT_FUNCTION __func__
 	#endif
+
+	#define SKA_LOGC_STATIC(logger, level, currentClass) logger.log<level, currentClass, __LINE__>(SKA_CURRENT_FUNCTION, __FILE__ )
+	#define SKA_LOGC(logger, level) SKA_LOGC_STATIC(logger, level, std::remove_const<std::remove_reference<decltype(*this)>::type>::type)
+	#define SKA_LOGC_CONFIG(logLevel, currentClass) namespace ska { \
+		template <> \
+		class LoggerClassLevel<currentClass> { \
+		public: \
+			static constexpr const auto level = logLevel; \
+		}; \
+	}
+
 #endif
