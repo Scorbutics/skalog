@@ -43,7 +43,7 @@ namespace ska {
 			}, loggerdetail::LogContext { logLevel, className, functionName, filename, line }, disabled };
 		}
 			
-		void onDestroyEntry(const LogEntry& self) {
+		void onDestroyEntry(LogEntry& self) {
 			m_logMethod.log(self, *this);
 		}
 
