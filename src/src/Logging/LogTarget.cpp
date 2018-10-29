@@ -1,5 +1,8 @@
 #include <cassert>
 
+//strlen
+#include <cstring>
+
 //setfill, setw
 #include <iomanip>
 

@@ -1,5 +1,4 @@
 #include <sstream>
-//#include <iostream>
 #include <cassert>
 
 #include "ColorStream.h"
@@ -50,7 +49,7 @@ std::size_t ska::loggerdetail::Tokenizer::matchOptionalNumeric(const std::string
 	return result;
 }
 
-std::pair<std::string, ska::loggerdetail::TokenType> ska::loggerdetail::Tokenizer::matchCharacterNonNumeric(const std::string& str, std::size_t& index) {	
+ska::loggerdetail::TokenType ska::loggerdetail::Tokenizer::matchCharacterNonNumeric(const std::string& str, std::size_t& index) {	
 	if(index >= str.size()) {
 		throw std::runtime_error("unexpected early end of input");
 	}
@@ -107,7 +106,7 @@ std::pair<std::string, ska::loggerdetail::TokenType> ska::loggerdetail::Tokenize
             default:
                 throw std::runtime_error("unknown symbol : " + ss.str());
         }
-        return std::make_pair(ss.str(), tokenType);
+        return tokenType;
 
 	} else {
         auto ss = std::stringstream {};
@@ -123,9 +122,9 @@ ska::loggerdetail::Token ska::loggerdetail::Tokenizer::parsePlaceholder(const st
     index++;
 
     const auto tokenLength = matchOptionalNumeric(str, index);
-    const auto [tokenSymbol, tokenType] = matchCharacterNonNumeric(str, index);
+    const auto tokenType = matchCharacterNonNumeric(str, index);
 	
-    return Token{ tokenSymbol, tokenType, tokenLength };
+    return Token{ "", tokenType, tokenLength };
 }
 
 ska::loggerdetail::Token ska::loggerdetail::Tokenizer::parseLiteral(const std::string& str, std::size_t& index) {
