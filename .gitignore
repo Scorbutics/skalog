@@ -18,3 +18,5 @@ CMakeCache.txt
 /Win32/Debug
 */Makefile
 */CMakeCache.txt
+*/CMakeFiles
+*/external/build
