@@ -1,3 +1,4 @@
+#include <benchmark/benchmark.h>
 #include <Logging/MultiLogger.h>
 
 using TestLogger = ska::MultiLogger<ska::Logger<>, ska::Logger<>>;
