@@ -6,7 +6,7 @@
 *.filters
 *.user
 *.sln
-/CMakeCache.txt
+CMakeCache.txt
 /.vs/skalog/v15
 /.vs/Project/v15
 /src/CMakeFiles
@@ -16,3 +16,5 @@
 /bench/CMakeFiles
 /bench/skalog_bench.dir/Debug
 /Win32/Debug
+*/Makefile
+*/CMakeCache.txt
