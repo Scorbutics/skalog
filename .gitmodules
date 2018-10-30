@@ -1,6 +1,0 @@
-[submodule "bench/external/benchmark"]
-	path = bench/external/benchmark
-	url = https://github.com/google/benchmark.git
-[submodule "bench/external/benchmark/googletest"]
-	path = bench/external/benchmark/googletest
-	url = https://github.com/google/googletest.git
