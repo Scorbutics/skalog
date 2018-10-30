@@ -13,4 +13,6 @@
 /src/skalog.dir/Debug
 /test/CMakeFiles
 /test/skalog_test.dir/Debug
+/bench/CMakeFiles
+/bench/skalog_bench.dir/Debug
 /Win32/Debug
