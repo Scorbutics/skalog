@@ -10,6 +10,7 @@
 **/skalog_bench
 **.sln
 CMakeCache.txt
+**/CMakeCache.txt
 /.vs
 **/Makefile
 Makefile
