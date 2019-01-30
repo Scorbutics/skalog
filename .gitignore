@@ -16,7 +16,9 @@ CMakeCache.txt
 /bench/CMakeFiles
 /bench/skalog_bench.dir/Debug
 /Win32/Debug
-*/Makefile
+**/Makefile
+Makefile
 */CMakeCache.txt
 */CMakeFiles
 */external/build
+/bench/external
