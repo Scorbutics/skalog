@@ -12,7 +12,7 @@ std::vector<ska::loggerdetail::Token> ska::loggerdetail::Tokenizer::parse(const 
     auto tokens = std::vector<Token> {};
     
 	try {
-		for(auto i = 0u; i < str.size(); i++) {
+		for(std::size_t i = 0u; i < str.size(); i++) {
 			if(str[i] == '%') {
 				tokens.push_back(parsePlaceholder(str, i));
 			} else {
