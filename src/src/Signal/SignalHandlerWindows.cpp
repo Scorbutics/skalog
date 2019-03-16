@@ -12,9 +12,11 @@ namespace ska {
 }
 
 extern "C" void SkaProcessDetailDefaultSignalHandler(int signalCode) {
-    for(const auto& action : (*ska::process::detail::SIGNAL_ACTIONS_CONTAINER)) {
-        action(signalCode);
-    }
+	if (ska::process::detail::SIGNAL_ACTIONS_CONTAINER != nullptr) {
+		for (const auto& action : (*ska::process::detail::SIGNAL_ACTIONS_CONTAINER)) {
+			action(signalCode);
+		}
+	}
 }
 
 void ska::process::detail::SignalHandlerAddActionImpl(SignalAction action) {
