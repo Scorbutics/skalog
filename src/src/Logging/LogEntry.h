@@ -40,7 +40,7 @@ namespace ska {
 			fullMessage << e.fullMessage.rdbuf();
 		}
 
-		LogEntry(LogEntry&& e) {
+		LogEntry(LogEntry&& e) noexcept {
 			id = e.id;
 			context = e.context;
 			date = e.date;

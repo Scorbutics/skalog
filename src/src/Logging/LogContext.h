@@ -6,7 +6,7 @@
 namespace ska {
 	namespace loggerdetail {
 		struct LogContext {
-			LogLevel logLevel;
+			LogLevel logLevel = LogLevel::Debug;
 			std::string className;
 
 			//!! static memory data !!
