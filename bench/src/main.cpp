@@ -21,8 +21,8 @@ static void BM_OutputDirectTest(benchmark::State& state) {
         logger.setPattern(ska::LogLevel::Info, "%v");
 
     for(auto _ : state) {
-          SKA_LOGC_STATIC(logger, ska::LogLevel::Info, TestLogger) << "test";
-       }
+        SKA_LOGC_STATIC(logger, ska::LogLevel::Info, TestLogger) << "test";
+    }
  }
 
 static void BM_MultiLoggerInfoTest(benchmark::State& state) {
@@ -39,8 +39,8 @@ static void BM_MultiLoggerInfoTest(benchmark::State& state) {
     logger2.get<1>().setPattern(ska::LogLevel::Info, "%v");
     
     for(auto _ : state) {
-          SKA_LOGC_STATIC(logger2, ska::LogLevel::Info, TestMultiLogger) << "test";
-       }
+        SKA_LOGC_STATIC(logger2, ska::LogLevel::Info, TestMultiLogger) << "test";
+    }
  }
 
 static void BM_LoggerErrorTest(benchmark::State& state) {
@@ -52,8 +52,8 @@ static void BM_LoggerErrorTest(benchmark::State& state) {
     logger2.setPattern(ska::LogLevel::Info, "%v");
     
     for(auto _ : state) {
-          SKA_LOGC_STATIC(logger2, ska::LogLevel::Warn, TestLoggerError) << "test";
-       }
+        SKA_LOGC_STATIC(logger2, ska::LogLevel::Warn, TestLoggerError) << "test";
+    }
  }
 
 struct ClassDisabledTest;
@@ -68,8 +68,8 @@ static void BM_LoggerClassErrorTest(benchmark::State& state) {
     logger2.setPattern(ska::LogLevel::Info, "%v");
     
     for(auto _ : state) {
-          SKA_LOGC_STATIC(logger2, ska::LogLevel::Warn, ClassDisabledTest) << "test";
-       }
+        SKA_LOGC_STATIC(logger2, ska::LogLevel::Warn, ClassDisabledTest) << "test";
+    }
  }
 
 BENCHMARK(BM_LoggerErrorTest);
