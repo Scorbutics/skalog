@@ -10,4 +10,4 @@ file(GLOB_RECURSE SOURCES
 
 string(REGEX REPLACE "CMakeFiles/[^;]+;?" "" SOURCES "${SOURCES}")
 
-add_library(skalog STATIC ${SOURCES})
+add_library(skalog ${SOURCES})
