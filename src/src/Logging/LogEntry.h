@@ -24,7 +24,6 @@ namespace ska {
 
 	public:
 		LogEntry(LogCallback callback, loggerdetail::LogContext context, bool disabled = false) :
-			id(InstanceCounter++),
 			context(std::move(context)),
 			date(currentDateTime()),
 			callback(callback),
@@ -32,7 +31,6 @@ namespace ska {
 		}
 
 		LogEntry(const LogEntry& e) {
-			id = e.id;
 			context = e.context;
 			date = e.date;
 			callback = e.callback;
@@ -41,7 +39,6 @@ namespace ska {
 		}
 
 		LogEntry(LogEntry&& e) noexcept {
-			id = e.id;
 			context = e.context;
 			date = e.date;
 			e.callback.swap(callback);
@@ -73,17 +70,12 @@ namespace ska {
             return date;
         }
 
-        std::size_t getId() const {
-            return id;
-        }
-
 		void disable(){
 			callback = LogCallback {};
 			disabled = true;
 		}
 
     private:
-        std::size_t id;
 		loggerdetail::LogContext context;
         //Mutable used safely because LogEntry is only a short time wrapper-class that is destroyed at the end of the log line
         mutable std::stringstream fullMessage;
@@ -91,7 +83,6 @@ namespace ska {
 		LogCallback callback;
         bool disabled;
 
-		static std::size_t InstanceCounter;
         static loggerdetail::LogTimePoint currentDateTime();
         
         template <class T>

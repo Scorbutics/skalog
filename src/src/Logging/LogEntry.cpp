@@ -2,8 +2,6 @@
 #include "LogEntry.h"
 #include "ColorStream.h"
 
-std::size_t ska::LogEntry::InstanceCounter = 0u;
-
 ska::loggerdetail::LogTimePoint ska::LogEntry::currentDateTime() {
     using namespace std::chrono; 
 	auto nowTime = system_clock::now();

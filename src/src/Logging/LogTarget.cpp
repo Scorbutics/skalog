@@ -70,7 +70,7 @@ void ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
             break;
 
         case TokenType::Identifier:
-            output << entry.getId();
+            output << &entry;
             break;
 
 		case TokenType::Class:
