@@ -98,7 +98,7 @@ namespace ska {
 	#endif
 
 	#define SKA_LOGC_STATIC(logger, level, currentClass) logger.log<level, currentClass, __LINE__>(SKA_CURRENT_FUNCTION, __FILE__ )
-	#define SKA_LOGC(logger, level) SKA_LOGC_STATIC(logger, level, std::remove_const<std::remove_reference<decltype(*this)>::type>::type)
+	#define SKA_LOGC(logger, level) SKA_LOGC_STATIC(logger, level, typename std::decay<decltype(*this)>::type)
 	#define SKA_LOGC_CONFIG(logLevel, currentClass) namespace ska { \
 		template <> \
 		class LoggerClassLevel<currentClass> { \
