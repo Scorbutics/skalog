@@ -61,8 +61,8 @@ namespace ska {
 
 		Logger(Logger&&) = default;
 
-        Logger(std::ostream& output, LogFilter filter) :
-            loggerdetail::Logger(output, std::move(filter)) {
+        Logger(std::ostream& output, LogFilter filter) {
+		addOutputTarget(output, std::move(filter));
         }
 		
 		template <LogLevel logLevel, class Wrapped, unsigned long line = 0l>
