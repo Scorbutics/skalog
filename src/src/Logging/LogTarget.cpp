@@ -25,10 +25,9 @@ namespace ska {
 	}
 }
 
-void ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry, const Token& token) {
+ska::loggerdetail::TokenConsumeType ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry, const Token& token) {
     auto& output = m_output;
     const auto& date = entry.getDate(); 
-    const std::string& logMessage = entry.getMessage();
 
 	switch(token.type()) {
 		case TokenType::Color :
@@ -38,7 +37,11 @@ void ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
 			break;
 		
 		case TokenType::Value :
-			output << logMessage;
+			if(!m_supportsComplexLogging) {
+				output << entry.getMessage();
+			} else {
+				return TokenConsumeType::ComplexPattern;
+			}
 			break;
 
 		case TokenType::Year :
@@ -99,9 +102,10 @@ void ska::loggerdetail::LogTarget::applyTokenOnOutput(const ska::LogEntry& entry
 		default:
 			assert(false);
 	}
+	return TokenConsumeType::Consumed;
 }
 
-void ska::loggerdetail::LogTarget::end() {
+void ska::loggerdetail::LogTarget::endLine() {
 	m_output << '\n';
 }
 

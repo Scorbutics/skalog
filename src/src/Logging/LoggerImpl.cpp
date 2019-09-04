@@ -14,15 +14,34 @@ ska::loggerdetail::Logger::Logger() :
 void ska::loggerdetail::Logger::consumeNow(LogEntry& self) {
 	assert (m_pattern.find(self.getContext().logLevel) != m_pattern.end());
 	auto& currentPattern = m_pattern.at(self.getContext().logLevel);
+	consumeNowWithPattern(currentPattern, self);
+	self.disable();
+}
+
+void ska::loggerdetail::Logger::consumeNowWithPattern(const Tokenizer& pattern, LogEntry& self, bool newLine) {
 	for (auto& o : m_output) {
 		if (o.isATarget(self)) {
-			for (auto& token : currentPattern) {
-				o.applyTokenOnOutput(self, token);
+			for (auto& token : pattern) {
+				consumeNowOnOutput(token, o, self);
 			}
-			o.end();
+			if(newLine) {
+				o.endLine();
+			}
 		}
 	}
-	self.disable();
+}
+
+void ska::loggerdetail::Logger::consumeNowOnOutput(const Token& token, LogTarget& o, LogEntry& self) {
+	if(o.applyTokenOnOutput(self, token) == TokenConsumeType::ComplexPattern) {
+		consumeNowWithPattern(Tokenizer{self.getMessage()}, self, false);
+	}
+}
+
+void ska::loggerdetail::Logger::enableComplexLogging() {
+	m_enableComplexLogging = true;
+	for(auto& target : m_output) {
+		target.enableComplexLogging();
+	}
 }
 
 void ska::loggerdetail::Logger::setPattern(LogLevel logLevel, std::string pattern) {
@@ -34,5 +53,6 @@ void ska::loggerdetail::Logger::setPattern(LogLevel logLevel, std::string patter
 }
 
 void ska::loggerdetail::Logger::addOutputTarget(std::ostream& output, LogFilter filter) {
-	m_output.emplace_back(output, filter, output.rdbuf() == std::cout.rdbuf());
+	std::cout << "enable complex logging : " << m_enableComplexLogging;
+	m_output.emplace_back(output, filter, m_enableComplexLogging, output.rdbuf() == std::cout.rdbuf());
 }

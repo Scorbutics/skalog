@@ -3,6 +3,7 @@
 #include <ostream>
 
 #include "LogFilter.h"
+#include "TokenConsumeType.h"
 
 namespace ska {
     class LogEntry;
@@ -11,20 +12,23 @@ namespace ska {
 
         class LogTarget {
         public:
-            LogTarget(std::ostream& output, LogFilter filter = GetIdentityLogFilter(), bool supportsColoring = false) : 
+            LogTarget(std::ostream& output, LogFilter filter = GetIdentityLogFilter(), bool supportsComplexLogging = false, bool supportsColoring = false) : 
                 m_output(output),
                 m_filter(std::move(filter)),
-				m_supportsColoring(supportsColoring) {
+				m_supportsColoring(supportsColoring),
+                m_supportsComplexLogging(supportsComplexLogging) {
             }
 
-            void applyTokenOnOutput(const LogEntry& entry, const Token& token);
+            TokenConsumeType applyTokenOnOutput(const LogEntry& entry, const Token& token);
+            void enableComplexLogging() { m_supportsComplexLogging = true; }
 			bool isATarget(const LogEntry& entry);
-			void end();
+			void endLine();
 
         private:
             std::ostream& m_output;
             LogFilter m_filter;
 			bool m_supportsColoring;
+            bool m_supportsComplexLogging;
         };
 
         
