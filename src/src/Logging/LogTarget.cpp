@@ -40,7 +40,7 @@ ska::loggerdetail::TokenConsumeType ska::loggerdetail::LogTarget::applyTokenOnOu
 			if(!m_supportsComplexLogging) {
 				output << entry.getMessage();
 			} else {
-				return TokenConsumeType::ComplexPattern;
+				return entry.isPatternReccursionFirstLevel() ? TokenConsumeType::ComplexPattern : TokenConsumeType::Consumed;
 			}
 			break;
 

@@ -33,6 +33,7 @@ void ska::loggerdetail::Logger::consumeNowWithPattern(const Tokenizer& pattern, 
 
 void ska::loggerdetail::Logger::consumeNowOnOutput(const Token& token, LogTarget& o, LogEntry& self) {
 	if(o.applyTokenOnOutput(self, token) == TokenConsumeType::ComplexPattern) {
+		self.nextPatternReccursionLevel();
 		consumeNowWithPattern(Tokenizer{self.getMessage()}, self, false);
 	}
 }
@@ -53,6 +54,5 @@ void ska::loggerdetail::Logger::setPattern(LogLevel logLevel, std::string patter
 }
 
 void ska::loggerdetail::Logger::addOutputTarget(std::ostream& output, LogFilter filter) {
-	std::cout << "enable complex logging : " << m_enableComplexLogging;
 	m_output.emplace_back(output, filter, m_enableComplexLogging, output.rdbuf() == std::cout.rdbuf());
 }

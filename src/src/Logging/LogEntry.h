@@ -75,6 +75,14 @@ namespace ska {
 			disabled = true;
 		}
 
+		void nextPatternReccursionLevel() {
+			patternReccursionLevel++;
+		}
+
+		bool isPatternReccursionFirstLevel() const {
+			return patternReccursionLevel == 0;
+		}
+
     private:
 		loggerdetail::LogContext context;
         //Mutable used safely because LogEntry is only a short time wrapper-class that is destroyed at the end of the log line
@@ -82,6 +90,7 @@ namespace ska {
         loggerdetail::LogTimePoint date;
 		LogCallback callback;
         bool disabled;
+				std::size_t patternReccursionLevel = 0;
 
         static loggerdetail::LogTimePoint currentDateTime();
         

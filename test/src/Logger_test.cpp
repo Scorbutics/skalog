@@ -177,6 +177,32 @@ TEST_CASE("[Logger] Sync - Compile time Full range log levels") {
 			}
 		}
 	}
+
+	SUBCASE("Complex pattern (recursive pattern contained by log message)") {
+		logger.setPattern(ska::LogLevel::Debug, "%v");
+		logger.setPattern(ska::LogLevel::Info, "%v");
+		logger.setPattern(ska::LogLevel::Warn, "%v");
+		logger.setPattern(ska::LogLevel::Error, "%v");
+
+		SUBCASE("Disabled functionality") {
+			SKA_LOGC_STATIC(logger, ska::LogLevel::Error, LoggerTest) << "test %6F";
+			CHECK(ss.str() == "test %6F\n");
+		}
+
+		SUBCASE("Enabled functionality") {
+			logger.enableComplexLogging();
+
+			SUBCASE("with File mention") {
+				SKA_LOGC_STATIC(logger, ska::LogLevel::Error, LoggerTest) << "test %6F";
+				CHECK(ss.str() == "test Logger\n");
+			}
+
+			SUBCASE("protection against infinite recursion") {
+				SKA_LOGC_STATIC(logger, ska::LogLevel::Error, LoggerTest) << "test %v";
+				CHECK(ss.str() == "test \n");
+			}
+		}
+	}
 	
 }
 
