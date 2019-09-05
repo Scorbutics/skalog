@@ -18,7 +18,15 @@ namespace ska {
 		LIGHTRED,
 		LIGHTMAGENTA,
 		YELLOW,
-		WHITE
+		WHITE,
+		BACKGROUND_BLACK,
+		BACKGROUND_BLUE,
+		BACKGROUND_GREEN,
+		BACKGROUND_CYAN,
+		BACKGROUND_RED,
+		BACKGROUND_MAGENTA,
+		BACKGROUND_YELLOW,
+		BACKGROUND_WHITE
 	};
 
 	std::ostream& operator<<(std::ostream& stream, const EnumColorStream &);
