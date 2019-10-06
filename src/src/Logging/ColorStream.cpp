@@ -19,14 +19,14 @@ std::ostream& ska::operator<<(std::ostream& stream, const ska::EnumColorStream& 
 	case LIGHTMAGENTA: rlutil::setColor(rlutil::LIGHTMAGENTA); break;
 	case YELLOW: rlutil::setColor(rlutil::YELLOW); break;
 	case WHITE: rlutil::setColor(rlutil::WHITE); break;
-	case BACKGROUND_BLACK: rlutil::setBackgroundColor(0); break;
-	case BACKGROUND_BLUE: rlutil::setBackgroundColor(1); break;
-	case BACKGROUND_GREEN: rlutil::setBackgroundColor(2); break;
-	case BACKGROUND_CYAN: rlutil::setBackgroundColor(3); break;
-	case BACKGROUND_RED: rlutil::setBackgroundColor(4); break;
-	case BACKGROUND_MAGENTA: rlutil::setBackgroundColor(5); break;
-	case BACKGROUND_YELLOW: rlutil::setBackgroundColor(6); break;
-	case BACKGROUND_WHITE: rlutil::setBackgroundColor(7); break;
+	case BKGD_BLACK: rlutil::setBackgroundColor(0); break;
+	case BKGD_BLUE: rlutil::setBackgroundColor(1); break;
+	case BKGD_GREEN: rlutil::setBackgroundColor(2); break;
+	case BKGD_CYAN: rlutil::setBackgroundColor(3); break;
+	case BKGD_RED: rlutil::setBackgroundColor(4); break;
+	case BKGD_MAGENTA: rlutil::setBackgroundColor(5); break;
+	case BKGD_YELLOW: rlutil::setBackgroundColor(6); break;
+	case BKGD_WHITE: rlutil::setBackgroundColor(7); break;
 	default: ;
 	}
 	return stream;
