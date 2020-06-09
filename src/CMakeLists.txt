@@ -11,3 +11,4 @@ file(GLOB_RECURSE SOURCES
 string(REGEX REPLACE "CMakeFiles/[^;]+;?" "" SOURCES "${SOURCES}")
 
 add_library(skalog ${SOURCES})
+set_property(TARGET skalog PROPERTY POSITION_INDEPENDENT_CODE ON)
