@@ -43,6 +43,8 @@ namespace ska {
 					loggerdetail::LogContext { logLevel, LoggerClassFormatter<Wrapped>::className, functionName, filename, line }
 				};
 			} else {
+				(void) functionName;
+				(void) filename;
 				return loggerdetail::EmptyProxy{};
 			}
 		}
