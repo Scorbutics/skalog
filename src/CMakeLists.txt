@@ -11,3 +11,6 @@ file(GLOB_RECURSE SOURCES
 string(REGEX REPLACE "CMakeFiles/[^;]+;?" "" SOURCES "${SOURCES}")
 
 add_library(skalog ${SOURCES})
+IF(UNIX)
+	target_link_libraries(skalog atomic)
+ENDIF(UNIX)
