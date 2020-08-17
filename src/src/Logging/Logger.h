@@ -23,7 +23,7 @@ namespace ska {
     namespace loggerdetail {
         struct EmptyProxy {};
         template <class T>
-        const EmptyProxy& operator<<(const EmptyProxy& logEntry, T&& logPart) {
+        const EmptyProxy& operator<<(const EmptyProxy& logEntry, T&&) {
             return logEntry;
         }
     }
@@ -72,6 +72,8 @@ namespace ska {
 				(logLevel >= MinLevel && logLevel <= MaxLevel)) {
 				return log<logLevel, line>(LoggerClassFormatter<Wrapped>::className, logLevel < getLogLevel(), functionName, filename);
 			} else {
+				(void) functionName;
+				(void) filename;
 				return loggerdetail::EmptyProxy{};
 			}
 		}
