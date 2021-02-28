@@ -7,7 +7,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 add_subdirectory(src)
 
-if(NOT ${SKALOG_NO_TEST})
+if(NOT SKALOG_NO_TEST)
 	add_subdirectory(test)
 endif()
 
