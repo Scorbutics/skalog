@@ -6,7 +6,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 add_subdirectory(src)
-add_subdirectory(test)
+
+if(NOT ${SKALOG_NO_TEST})
+	add_subdirectory(test)
+endif()
 
 if(${BUILD_WITH_BENCHS})
 	add_subdirectory(bench)
