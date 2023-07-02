@@ -48,7 +48,7 @@ namespace ska {
             void consumeNowWithPattern(const Tokenizer& pattern, LogEntry& self, bool newLine = true);
             void consumeNowOnOutput(const Token& token, LogTarget& target, LogEntry& self);
 
-            LogLevel m_logLevel;
+            LogLevel m_logLevel = LogLevel::Debug;
             std::vector<LogTarget> m_output;
             std::unordered_map<LogLevel, Tokenizer> m_pattern;
             bool m_enableComplexLogging = false;
