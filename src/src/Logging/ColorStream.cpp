@@ -1,4 +1,5 @@
 #include "ColorStream.h"
+#ifndef SKALOG_NO_RLUTIL
 #include <rlutil.h>
 
 std::ostream& ska::operator<<(std::ostream& stream, const ska::EnumColorStream& color) {
@@ -31,4 +32,9 @@ std::ostream& ska::operator<<(std::ostream& stream, const ska::EnumColorStream& 
 	}
 	return stream;
 }
+#else
+std::ostream& ska::operator<<(std::ostream& stream, const ska::EnumColorStream& color) {
+	return stream;
+}
+#endif
 
